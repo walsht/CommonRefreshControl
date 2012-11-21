@@ -197,6 +197,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6582E9F7165D7DC3008D6F08 /* Build configuration list for PBXNativeTarget "CommonRefreshControl" */;
 			buildPhases = (
+				6582EA06165D874D008D6F08 /* GitHub Version and Build Update Script */,
 				6582E9AF165D7DC3008D6F08 /* Sources */,
 				6582E9B0165D7DC3008D6F08 /* Frameworks */,
 				6582E9B1165D7DC3008D6F08 /* Resources */,
@@ -293,6 +294,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		6582EA06165D874D008D6F08 /* GitHub Version and Build Update Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "GitHub Version and Build Update Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Assumes that you tag versions with the version number (e.g., \"1.1\") and then the build number is\n# that plus the number of commits since the tag (e.g., \"1.1.17\")\n\necho \"Updating version/build number from git...\"\nplist=${PROJECT_DIR}/${INFOPLIST_FILE}\n\n# increment the build number (ie 115 to 116)\nversionnum=`git describe | awk '{split($0,a,\"-\"); print a[1]}'`\nbuildnum=`git describe | awk '{split($0,a,\"-\"); print a[1] \".\" a[2]}'`\n\nif [[ \"${versionnum}\" == \"\" ]]; then\necho \"No version number from git\"\nexit 2\nfi\n\nif [[ \"${buildnum}\" == \"\" ]]; then\necho \"No build number from git\"\nexit 2\nfi\n\n/usr/libexec/Plistbuddy -c \"Set CFBundleShortVersionString $versionnum\" \"${plist}\"\necho \"Updated version number to $versionnum\"\n\n/usr/libexec/Plistbuddy -c \"Set CFBundleVersion $buildnum\" \"${plist}\"\necho \"Updated build number to $buildnum\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -497,6 +512,7 @@
 				6582E9F9165D7DC3008D6F08 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		6582E9FA165D7DC3008D6F08 /* Build configuration list for PBXNativeTarget "CommonRefreshControlTests" */ = {
 			isa = XCConfigurationList;
@@ -505,6 +521,7 @@
 				6582E9FC165D7DC3008D6F08 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
